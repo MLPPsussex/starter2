@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<title>Monospaced Font Bitmaps</title>
+</head>
 <body>
-  <p> Canvas Text program </p>
-<canvas id="Canvas1" width="800" height="500" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-
-<script>
-
-	const canvas = document.getElementById('Canvas1');
+	<canvas id="canvas"></canvas>
+	<script>
+		const canvas = document.getElementById('canvas');
 		const ctx = canvas.getContext('2d');
 
 		// Define the font properties
@@ -16,7 +15,7 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 		const charWidth = 80; // Adjust as needed to get the desired spacing
 
 		// Define the characters to include
-		const chars = 'ABCDEFGH';
+		const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 		// Create an object to store the bitmaps for each character
 		const charBitmaps = {};
@@ -34,7 +33,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 			ctx.fillText(char, i * charWidth + charWidth / 2, fontSize / 2);
 
 			// Capture the character as a bitmap
-			charBitmaps[char] = ctx.getImageData(i * charWidth, 0, charWidth, fontSize);
+			const charImageData = ctx.getImageData(i * charWidth, 0, charWidth, fontSize);
+			charBitmaps[char] = createScaledBitmap(charImageData, charWidth, fontSize);
 		}
 
 		// Define a function to write text to the canvas using the bitmaps
@@ -47,19 +47,37 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 				if (!charBitmaps[char]) continue;
 
 				// Calculate the position and size of the character bitmap
-				const xPos = x + i * charWidth;
+				const xPos = x + i * charWidth * scale;
 				const yPos = y;
 				const width = charWidth * scale;
 				const height = fontSize * scale;
 
 				// Draw the character bitmap to the screen
-				ctx.putImageData(charBitmaps[char], xPos, yPos, 0, 0, width, height);
-				scale=.9*scale
+				ctx.drawImage(charBitmaps[char], xPos, yPos, width, height);
 			}
 		}
 
+		// Define a function to create a scaled bitmap image
+		function createScaledBitmap(imageData, width, height) {
+			const tempCanvas = document.createElement('canvas');
+			tempCanvas.width = width;
+			tempCanvas.height = height;
+
+			const tempContext = tempCanvas.getContext('2d');
+			tempContext.putImageData(imageData, 0, 0);
+
+			const scaledCanvas = document.createElement('canvas');
+			scaledCanvas.width = width;
+			scaledCanvas.height = height;
+
+			const scaledContext = scaledCanvas.getContext('2d');
+			scaledContext.drawImage(tempCanvas, 0, 0, width, height);
+
+			return scaledCanvas;
+		}
+
 		// Example usage
-		writeText('AAABBBBBBB', 50, 200, 1)
+		writeText('HELLO WORLD', 50, 50, 0.5); // Writes the text at (50, 50) at half size
 	</script>
 </body>
 </html>
