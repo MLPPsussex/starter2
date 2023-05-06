@@ -7,61 +7,58 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
 
-// Create a canvas element
-var c1 = document.getElementById('Canvas1');
-var ctx = c1.getContext('2d');
-c1.width = 500;
-c1.height = 400;
-  
-//  const fontSize = 36;
-// ctx.font = `${fontSize}px monospace`;
+	const canvas = document.getElementById('Canvas1');
+		const ctx = canvas.getContext('2d');
 
-  ctx.fillText("test",100,200)
-  alert("cycling through alphabet")
+		// Define the font properties
+		const fontName = 'monospace';
+		const fontSize = 100;
+		const charWidth = 80; // Adjust as needed to get the desired spacing
 
+		// Define the characters to include
+		const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+		// Create an object to store the bitmaps for each character
+		const charBitmaps = {};
 
-// Define the characters to render
-const characters = 'abcdefghijklmnopqrstuvwxyz';
+		// Draw each character to the screen and capture it as a bitmap
+		for (let i = 0; i < chars.length; i++) {
+			const char = chars.charAt(i);
 
-// Create an object to store the bitmap images
-const bitmaps = {};
+			// Set the font properties for this character
+			ctx.font = `${fontSize}px ${fontName}`;
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
 
-// Cycle through the characters and render each one to the canvas
-for (let i = 0; i < characters.length; i++) {
-  const char = characters.charAt(i);
+			// Draw the character to the screen
+			ctx.fillText(char, i * charWidth + charWidth / 2, fontSize / 2);
 
-  // Clear the canvas
-  ctx.clearRect(0, 0, c1.width, c1.height);
+			// Capture the character as a bitmap
+			charBitmaps[char] = ctx.getImageData(i * charWidth, 0, charWidth, fontSize);
+		}
 
-  // Draw the character to the canvas
-  ctx.fillText(char, 0, fontSize);
+		// Define a function to write text to the canvas using the bitmaps
+		function writeText(text, x, y, scale) {
+			// Loop through each character in the text
+			for (let i = 0; i < text.length; i++) {
+				const char = text.charAt(i);
 
-  // Capture the image data as a bitmap
-  const bitmap = new Image();
-  bitmap.src = c1.toDataURL();
-  bitmaps[char] = bitmap;
-}
+				// If the character is not in the bitmap object, skip it
+				if (!charBitmaps[char]) continue;
 
-  
-// Function to draw text using the bitmaps
-function drawText(text, x, y, scale) {
-  for (let i = 0; i < text.length; i++) {
-    const char = text.charAt(i);
-    const bitmap = bitmaps[char];
-    if (bitmap) {
-      const width = bitmap.width * scale;
-      const height = bitmap.height * scale;
-      ctx.drawImage(bitmap, x, y, width, height);
-      x += width;
-    }
-  }
-}
+				// Calculate the position and size of the character bitmap
+				const xPos = x + i * charWidth * scale;
+				const yPos = y;
+				const width = charWidth * scale;
+				const height = fontSize * scale;
 
-// Example usage
-drawText('hello world', 50, 50, 2);
+				// Draw the character bitmap to the screen
+				ctx.putImageData(charBitmaps[char], xPos, yPos, 0, 0, width, height);
+			}
+		}
 
-
-  </script>
-  </body>
+		// Example usage
+		writeText('HELLO WORLD', 50, 50, 0.5); // Writes the text at (50, 50) at half size
+	</script>
+</body>
 </html>
