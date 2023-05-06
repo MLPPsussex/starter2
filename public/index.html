@@ -4,7 +4,7 @@
 	<title>Monospaced Font Bitmaps</title>
 </head>
 <body>
-	<canvas id="canvas" width="800" height="500"></canvas>
+	<canvas id="canvas" width="800" height="600"></canvas>
 	<script>
 		const canvas = document.getElementById('canvas');
 		const ctx = canvas.getContext('2d');
@@ -83,7 +83,7 @@
 		
 function grow(){
 	size+=.005
-	ctx.clearRect(0,200,800,200)
+	ctx.clearRect(0,200,800,400)
 	writeText('BBBCAAAA', 20, 260, size);
 	setTimeout(grow, 80)
 }
