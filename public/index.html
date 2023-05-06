@@ -77,8 +77,18 @@
 		}
 
 		// Example usage
-		writeText('AAABBBC', 50, 200, 0.5);
-		writeText('BBBCAAAA', 50, 260, 0.8);
+		writeText('AAABBBC', 50, 150, 0.5);
+		size=.5
+		grow()
+		
+function grow(){
+	size+=.01
+	ctx.clearRect(0,200,500,200)
+	writeText('BBBCAAAA', 50, 260, size);
+	setTimeout(grow, 100)
+}
+	
+	
 	</script>
 </body>
 </html>
