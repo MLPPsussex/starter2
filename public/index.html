@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <p> Canvas Text program </p>
+<canvas id="Canvas1" width="800" height="800" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+
+// Create a canvas element
+var c1 = document.createElement('Canvas1');
+var ctx = c1.getContext('2d');
+c1.width = 500;
+c1.height = 500;
+  const fontSize = 36;
+ctx.font = `${fontSize}px monospace`;
+
+  ctx.fillText("test",100,200)
+  alert("cycling through alphabet")
+
+/*
+
+// Define the characters to render
+const characters = 'abcdefghijklmnopqrstuvwxyz';
+
+// Create an object to store the bitmap images
+const bitmaps = {};
+
+// Cycle through the characters and render each one to the canvas
+for (let i = 0; i < characters.length; i++) {
+  const char = characters.charAt(i);
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, c1.width, c1.height);
+
+  // Draw the character to the canvas
+  ctx.fillText(char, 0, fontSize);
+
+  // Capture the image data as a bitmap
+  const bitmap = new Image();
+  bitmap.src = c1.toDataURL();
+  bitmaps[char] = bitmap;
+}
+
+  
+// Function to draw text using the bitmaps
+function drawText(text, x, y, scale) {
+  for (let i = 0; i < text.length; i++) {
+    const char = text.charAt(i);
+    const bitmap = bitmaps[char];
+    if (bitmap) {
+      const width = bitmap.width * scale;
+      const height = bitmap.height * scale;
+      ctx.drawImage(bitmap, x, y, width, height);
+      x += width;
+    }
+  }
+}
+
+// Example usage
+drawText('hello world', 50, 50, 2);
+*/
+
+  </script>
+  </body>
+</html>
